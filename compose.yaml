@@ -1,0 +1,29 @@
+﻿services:
+  remy.api:
+    image: remy.api
+    build:
+      context: .
+      dockerfile: Remy.Api/Dockerfile
+      
+      
+  remy.postgres:
+    image: postgres:18
+    container_name: postgres-dev
+    environment:
+        POSTGRES_PASSWORD: mysecretpassword
+    ports:
+        - "5432:5432"
+    volumes:
+        - postgres_data:/var/lib/postgresql
+  
+  
+  remy.core:
+    image: remy.core
+    build:
+      context: .
+      dockerfile: Remy.Core/Dockerfile
+      
+      
+volumes:
+  postgres_data:
+
