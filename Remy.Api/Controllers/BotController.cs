@@ -1,3 +1,4 @@
+using System.Net.NetworkInformation;
 using Microsoft.AspNetCore.Mvc;
 using Remy.Api.Services.i;
 using Telegram.Bot;
@@ -13,8 +14,7 @@ public class BotController(ITelegramBotClient botClient) : ControllerBase
     public async Task<IActionResult> Webhook(
         [FromBody] Update update,
         [FromServices] ITelegramService service,
-        CancellationToken ct
-    )
+        CancellationToken ct)
     {
         var result = await service.ProcessUpdateAsync(update, Unauthorized, Ok, ct);
 
@@ -34,5 +34,11 @@ public class BotController(ITelegramBotClient botClient) : ControllerBase
         }
 
         return result;
+    }
+
+    [HttpGet]
+    public IActionResult Ping()
+    {
+        return Ok(DateTime.Now);
     }
 }
