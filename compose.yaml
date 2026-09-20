@@ -5,7 +5,7 @@ services:
       - "127.0.0.1:5001:8080"
     build:
       context: .
-      dockerfile: Remy.Apidock/Dockerfile
+      dockerfile: Remy.Api/Dockerfile
     secrets:
       - source: telegram_bot_token
         target: Telegram__BotToken
