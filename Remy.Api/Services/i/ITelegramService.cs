@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using Remy.Api.Models.Telegram;
+using Telegram.Bot.Types;
 
 namespace Remy.Api.Services.i;
 
 internal interface ITelegramService
 {
     Task<IActionResult> ProcessUpdateAsync(
-        TelegramUpdate update,
+        Update update,
         Func<IActionResult> unauthorized,
         Func<IActionResult> ok,
         CancellationToken ct);

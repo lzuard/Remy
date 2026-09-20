@@ -1,29 +1,36 @@
-﻿services:
+services:
   remy.api:
     image: remy.api
     build:
       context: .
       dockerfile: Remy.Api/Dockerfile
-      
-      
+    secrets:
+      - source: telegram_bot_token
+        target: Telegram__BotToken
+      - source: telegram_webhook_secret
+        target: Telegram__WebHookSecret
+      - source: postgres_password
+        target: Postgres__Password
+
   remy.postgres:
     image: postgres:18
     container_name: postgres-dev
     environment:
-        POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    secrets:
+      - postgres_password
     ports:
-        - "5432:5432"
+      - "5432:5432"
     volumes:
-        - postgres_data:/var/lib/postgresql
-  
-  
-  remy.core:
-    image: remy.core
-    build:
-      context: .
-      dockerfile: Remy.Core/Dockerfile
-      
-      
+      - postgres_data:/var/lib/postgresql
+
+secrets:
+  telegram_bot_token:
+    file: ./.secrets/Telegram__BotToken
+  telegram_webhook_secret:
+    file: ./.secrets/Telegram__WebHookSecret
+  postgres_password:
+    file: ./.secrets/Postgres__Password
+
 volumes:
   postgres_data:
-

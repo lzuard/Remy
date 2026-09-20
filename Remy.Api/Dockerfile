@@ -8,6 +8,8 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Remy.Api/Remy.Api.csproj", "Remy.Api/"]
+COPY ["Remy.Core/Remy.Core.csproj", "Remy.Core/"]
+COPY ["Remy.Data/Remy.Data.csproj", "Remy.Data/"]
 RUN dotnet restore "Remy.Api/Remy.Api.csproj"
 COPY . .
 WORKDIR "/src/Remy.Api"

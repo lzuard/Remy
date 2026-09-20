@@ -2,8 +2,16 @@ using System.Text.Json;
 using Remy.Api.Options;
 using Remy.Api.Services;
 using Remy.Api.Services.i;
+using Remy.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var secretsDirectory = builder.Configuration["SecretsDirectory"] ?? "/run/secrets";
+builder.Configuration.AddKeyPerFile(
+    Path.GetFullPath(secretsDirectory, builder.Environment.ContentRootPath),
+    optional: true);
+
+builder.AddDataLayer();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -13,12 +21,14 @@ builder.Services.AddOpenApi();
 
 
 builder.Services.AddOptions<TelegramOptions>()
-    .Bind(builder.Configuration.GetSection(TelegramOptions.SectionName));
+    .Bind(builder.Configuration.GetSection(TelegramOptions.SectionName))
+    .Validate(options => !string.IsNullOrWhiteSpace(options.BotToken), "Telegram:BotToken is required.")
+    .Validate(options => !string.IsNullOrWhiteSpace(options.WebHookSecret), "Telegram:WebHookSecret is required.")
+    .ValidateOnStart();
 
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<ITelegramService, TelegramService>();
-
-builder.Services.Configure<TelegramOptions>(builder.Configuration.GetSection(TelegramOptions.SectionName));
 
 var app = builder.Build();
 
