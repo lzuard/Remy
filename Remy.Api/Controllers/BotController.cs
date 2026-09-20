@@ -1,4 +1,3 @@
-using System.Net.NetworkInformation;
 using Microsoft.AspNetCore.Mvc;
 using Remy.Api.Services.i;
 using Telegram.Bot;
@@ -7,7 +6,7 @@ using Telegram.Bot.Types;
 namespace Remy.Api.Controllers;
 
 [ApiController]
-[Route("[controller]/[action]")]
+[Route("api/[controller]/[action]")]
 public class BotController(ITelegramBotClient botClient) : ControllerBase
 {
     [HttpPost]
