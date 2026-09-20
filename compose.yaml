@@ -1,9 +1,11 @@
 services:
   remy.api:
     image: remy.api
+    ports:
+      - "127.0.0.1:5001:8080"
     build:
       context: .
-      dockerfile: Remy.Api/Dockerfile
+      dockerfile: Remy.Apidock/Dockerfile
     secrets:
       - source: telegram_bot_token
         target: Telegram__BotToken
