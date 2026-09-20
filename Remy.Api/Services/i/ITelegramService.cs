@@ -3,7 +3,7 @@ using Telegram.Bot.Types;
 
 namespace Remy.Api.Services.i;
 
-internal interface ITelegramService
+public interface ITelegramService
 {
     Task<IActionResult> ProcessUpdateAsync(
         Update update,

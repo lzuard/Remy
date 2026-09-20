@@ -1,8 +1,10 @@
 using System.Text.Json;
+using Microsoft.Extensions.Options;
 using Remy.Api.Options;
 using Remy.Api.Services;
 using Remy.Api.Services.i;
 using Remy.Data;
+using Telegram.Bot;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +29,9 @@ builder.Services.AddOptions<TelegramOptions>()
     .ValidateOnStart();
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddSingleton<ITelegramBotClient>(services =>
+    new TelegramBotClient(services.GetRequiredService<IOptions<TelegramOptions>>().Value.BotToken));
 
 builder.Services.AddScoped<ITelegramService, TelegramService>();
 
